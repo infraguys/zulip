@@ -553,6 +553,11 @@ def send_notifications_to_bouncer(
 
         return
 
+    # Fix content to security messages
+    if apns_payload.get('alert', {}).get('body', ''):
+        apns_payload['alert']['body'] = 'Hidden message'
+    if gcm_payload.get('content', ''):
+        gcm_payload['content'] = 'Hidden message'
     post_data = {
         "user_uuid": str(user_profile.uuid),
         # user_uuid is the intended future format, but we also need to send user_id
